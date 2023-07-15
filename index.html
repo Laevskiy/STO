@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>СТО</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<h1>Оформление заказа</h1>
+<h3>Сумма вашего заказа(ор):<div id="show-schet"></div></h3>
+    <form name="order">
+        <p><label>
+        Ваше имя : <input name="name" placeholder="Ваше имя">
+        </label> </p>
+
+        <p><label>
+        Ваш номер телефона:<input name="number" placeholder="Номер телефона в формате +375..." >
+        </label> </p>
+    </form>
+
+<h2>Выбор марки авто:</h2>
+
+    <select id="typeauto" onchange="sumi()" >
+	    <option value="Audi">Audi</option>
+	    <option value="BMW">BMW</option>
+	    <option value="WV">WV</option>
+        <option value="Opel">Opel</option>
+	</select>
+
+<h2>Выбор услуги:</h2>
+
+    <select id="typeus" onchange="sumi()" >
+	    <option value="oil">Замена масла</option>
+	    <option value="remont">Ремонт подвески</option>
+	    <option value="akpp">Замена АКП</option>
+    </select>
+<br>
+<br>
+<button class="btn" onclick="ord()" type="button" name="order">Оформить заказ</button><br>
+
+<script type="text/javascript">
+    let tg = window.Telegram.WebApp;
+        tg.expand();
+
+    let chet = 0;
+    var summa_scheta = document.getElementById('show-schet');
+    summa_scheta.innerHTML = chet;
+
+    function sumi() {
+        let z = 0;
+        let u = 0;
+
+        var summa_scheta = document.getElementById('show-schet');
+        var a =  document.getElementById("typeauto").value;
+        var b =  document.getElementById("typeus").value;
+
+        if (a == "Audi") {
+           z = 1.5;}
+        else if (a == "BMW"){
+           z = 2;}
+        else if (a == "WV"){
+           z = 1.2;}
+        else if (a == "Opel"){
+           z = 1;}
+
+        if (b == "oil") {
+           u = 850;}
+        else if (b == "remont"){
+           u = 1200;}
+        else if (b == "akpp"){
+           u = 3000;}
+
+
+        chet = z*u
+        summa_scheta.innerHTML = chet;
+    }
+
+
+    function ord() {
+
+        var name = document.forms.order.name.value;
+        var number = document.forms.order.number.value;
+        var a =  document.getElementById("typeauto").value;
+        var b =  document.getElementById("typeus").value;
+
+        let order = {
+        name: name,
+        number: number,
+        auto: a,
+        usluga: b,
+        price: chet,
+        };
+
+	    alert("Заказ принят в обработку");
+	    let ansver = JSON.stringify(order);
+        console.log(ansver)
+        tg.sendData(ansver);
+        tg.close()
+
+}
+
+</script>
+
+</body>
+</html>
